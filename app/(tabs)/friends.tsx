@@ -37,6 +37,7 @@ export default function FriendsScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<NearbyProfile | null>(null);
+  const [matchedId, setMatchedId] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ export default function FriendsScreen() {
       if (matchData) {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         setMatchedProfile(currentProfile);
+        setMatchedId(matchData.id);
         setShowMatch(true);
       }
 
@@ -108,17 +110,18 @@ export default function FriendsScreen() {
 
   const handleSendMessage = useCallback(() => {
     setShowMatch(false);
-    if (matchedProfile) {
+    if (matchedId) {
       router.push({
         pathname: "/(screens)/chat",
-        params: { userId: matchedProfile.id },
+        params: { matchId: matchedId },
       });
     }
-  }, [matchedProfile, router]);
+  }, [matchedId, router]);
 
   const handleKeepSwiping = useCallback(() => {
     setShowMatch(false);
     setMatchedProfile(null);
+    setMatchedId(null);
   }, []);
 
   const isLoading = locationLoading || profilesLoading || waveLimitLoading;

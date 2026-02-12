@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router, useLocalSearchParams } from "expo-router";
@@ -170,8 +171,10 @@ export default function BuilderDetailScreen() {
       router.push("/(screens)/paywall");
       return;
     }
-    // In a full implementation, this would create or navigate to a conversation
-    router.push(`/(screens)/chat?matchId=builder_${id}`);
+    Alert.alert(
+      "Coming soon",
+      "Direct messaging with builders will be available in the next update. Wave at them on the Discover map to connect!",
+    );
   };
 
   if (loading) {

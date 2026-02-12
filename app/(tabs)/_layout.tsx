@@ -75,8 +75,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* Hide the old boilerplate index route */}
-      <Tabs.Screen name="index" options={{ href: null }} />
     </Tabs>
   );
 }

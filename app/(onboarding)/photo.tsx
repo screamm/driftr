@@ -114,10 +114,7 @@ export default function PhotoScreen() {
   }
 
   async function uploadAvatar(): Promise<string | null> {
-    if (!avatarUri || !user) {
-      console.error("uploadAvatar: missing", { avatarUri: !!avatarUri, user: !!user });
-      return null;
-    }
+    if (!avatarUri || !user) return null;
 
     setIsUploading(true);
 
@@ -143,15 +140,13 @@ export default function PhotoScreen() {
         });
 
       if (uploadError) {
-        console.error("Avatar upload error:", uploadError.message);
         Alert.alert("Upload failed", uploadError.message);
         return null;
       }
 
       const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
       return data.publicUrl;
-    } catch (err) {
-      console.error("Avatar upload exception:", err);
+    } catch {
       Alert.alert("Upload failed", "Could not upload photo. Please try again.");
       return null;
     } finally {
@@ -252,7 +247,12 @@ export default function PhotoScreen() {
 
       const response = await fetch(videoUri);
       const blob = await response.blob();
-      const arrayBuffer = await blob.arrayBuffer();
+      const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as ArrayBuffer);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+      });
 
       const { error: uploadError } = await supabase.storage
         .from("videos")
@@ -293,7 +293,6 @@ export default function PhotoScreen() {
 
     if (!user) {
       Alert.alert("Not signed in", "No authenticated user found. Please go back and sign in.");
-      console.error("handleContinue: user is null", { session: !!useAuthStore.getState().session });
       return;
     }
 
@@ -306,8 +305,7 @@ export default function PhotoScreen() {
         await updateProfile({ avatar_url: publicUrl });
         router.push("/(onboarding)/looking-for");
       }
-    } catch (err) {
-      console.error("handleContinue error:", err);
+    } catch {
       Alert.alert("Error", "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);

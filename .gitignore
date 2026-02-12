@@ -1,6 +1,4 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# Dependencies
 node_modules/
 
 # Expo
@@ -9,19 +7,20 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# EAS
+.eas/
+
+# Native build folders
+/ios
+/android
+
+# Kotlin
 .kotlin/
-*.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
 
 # Metro
 .metro-health-check*
 
-# debug
+# Debug logs
 npm-debug.*
 yarn-debug.*
 yarn-error.*
@@ -30,16 +29,51 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
+# Environment variables
 .env
+.env.*
 .env*.local
 
-# Google service account
+# Google / Firebase service accounts
 google-service-account.json
+google-services.json
+GoogleService-Info.plist
 
-# typescript
+# RevenueCat
+revenuecat-credentials.json
+
+# Supabase
+supabase/.temp/
+
+# TypeScript
 *.tsbuildinfo
 
-# generated native folders
-/ios
-/android
+# Certificates & keys
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+__snapshots__/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Build artifacts
+*.apk
+*.aab
+*.ipa
+*.app
